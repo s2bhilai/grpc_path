@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcService.Server";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package post;
+
+service UserPost {
+	rpc GetPost(PostRequest) returns (PostResponse);
+	rpc GetPostStream(PostRequest) returns (stream PostResponseStream);
+	rpc GetMultiPostStream(stream PostRequest) returns (MultiPostResponse);
+
+	rpc PrintStream (stream PrintRequest) returns (google.protobuf.Empty);
+}
+
+message PrintRequest {
+	string message = 1;
+}
+
+message PostRequest {
+	int32 id = 1;
+}
+
+message PostResponse {
+	string userId = 1;
+	string title = 2;
+	string body = 3;
+}
+
+message PostResponseStream {
+	string userId = 1;
+	string title = 2;
+	string body = 3;
+	google.protobuf.Timestamp timestamp = 4;
+}
+
+message MultiPostResponse {
+	repeated PostResponse posts = 1;
+}
